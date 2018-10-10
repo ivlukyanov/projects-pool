@@ -1,7 +1,7 @@
 # npm
 node_modules/
 package-lock.json
-public/upload
+public/upload/
 *.log
 *.gz
 
