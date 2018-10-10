@@ -1,0 +1,21 @@
+extend _bootstrap
+
+append styles
+    +bootswatch('flatly')
+    //- link(rel='stylesheet', href='/css/lato.css')
+    //-link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic&subset=cyrillic,latin')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/lato-font@3.0.0/css/lato-font.min.css')
+
+append body
+    .container
+        block activenav
+            - var activepage = ''
+
+        +navbar('Матрица проектов','dropdown_menu', 'default', '/')
+            +nav_item('/about', (activepage === 'about') ? 'active' : '') Что это?
+            +nav_item('/projects/register', (activepage === 'register') ? 'active' : '') Регистрация
+            +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все проекты
+
+        block content
+
+append scripts

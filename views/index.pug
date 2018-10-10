@@ -1,0 +1,14 @@
+extends _layout
+
+block activenav
+    - var activepage = ''
+
+block content
+    .container
+        .jumbotron
+            h1 Станьте частью сообщества
+            br
+            p.lead
+                | И получите доступ к ресурсам других проектов и людей
+            br
+            +a-btn-primary('/projects/register') Зарегистрироваться
