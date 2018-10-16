@@ -1,0 +1,38 @@
+extends _layout
+
+block activenav
+  - var activepage = 'project'
+
+block content
+  if error
+    +panel-danger('Ошибка')
+      =error
+    br
+    a(href='/projects') Все проекты
+  else
+    h1 Данные о проекте
+    a(href='/projects/'+data._id)
+      img.img-circle.pull-left(src='/upload/img/'+data.logoFile, alt='Logo', width="100px")
+      h2(style='padding-top: 20px')=data.name
+    .container-fluid
+      .row
+        table.table.table-striped
+          tr
+            td.col-xs-2 URL:
+            td.col-xs-10 #{data.url}
+          tr
+            td Описание:
+            td #{data.descript}
+          tr
+            td Лидер:
+            td #{data.leader}
+          tr
+            td Стек технологий:
+            td #{data.stack}
+          tr
+            td Возможности:
+            td #{data.capabilities}
+          tr
+            td Потребности:
+            td #{data.needs}
+    a(href='/projects/'+data._id+'/edit') Изменить

@@ -1,0 +1,37 @@
+extends _layout
+
+block activenav
+  - var activepage = 'projects'
+
+block content
+  h1 Все проекты
+  
+  table.table(class="table-striped")
+    thead
+      tr
+        th #
+        th Лого
+        th.col-xs-5 Название
+        th.col-xs-2 URL
+        th.col-xs-2 Лидер
+        th Действия
+    tbody
+      - let i=0
+      each row in data
+        - i++
+        tr
+          td
+            a(href="/projects/" + row['_id']) #{i}
+          td
+            a(href='/projects/' + row['_id'])
+              if row['logoFile']
+                img.img-circle.pull-left(src='/upload/img/' + row['logoFile'], alt='Logo', width="30px")
+              else
+                span No Logo
+          td #{row['name']}
+          td #{row['url']}
+          td #{row['leader']}
+          td 
+            a(href="/projects/" + row['_id']) Смотреть
+            | 
+            a(href="/projects/" + row['_id'] + "/edit") Изменить

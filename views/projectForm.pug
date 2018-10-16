@@ -1,0 +1,25 @@
+extends _layout
+
+block activenav
+  - var activepage = 'register'
+
+block content
+  h1 Заполните форму своего проекта
+  if error
+    +panel-danger('Ошибка формы')
+      =error
+  .row
+    .col-sm-8
+      form(method='post',enctype='multipart/form-data')
+        input(name='_id', value=data._id, hidden=true)
+        +input('text','name','name','Название','Название проекта',data.name)
+        +input('text','url','url','URL','Адрес сайта',data.url)
+        +textarea(3,'descript','descript','Описание','Вкратце о проекте (2-3 предложения)',data.descript)
+        //- todo: связать лидера с моделью User
+        +input('text','leader','leader','Лидер','Глава проекта',data.leader)
+        //- todo: добавить показ текущего лого
+        +input('file','logoFile','logoFile','Логотип','')
+        +textarea(2,'stack','stack','Стек технологий','На каких технологиях разрабатывается проект?',data.stack)
+        +textarea(2,'capabilities','capabilities','Ваши возможности','Чем вы можете помочь сообществу?',data.capabilities)
+        +textarea(2,'needs','needs','Ваши потребности','Что нужно вам для реализации проекта?',data.needs)
+        +submit('Зарегистрировать')

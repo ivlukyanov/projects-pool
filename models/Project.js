@@ -1,29 +1,34 @@
 const mongoose = require('mongoose');
 
-let Images = new mongoose.Schema({
-    kind: {
-        type: String,
-        enum: ['thumbnail', 'detail'],
-        required: true
-    },
-    url: { type: String, required: true }
+let TeamMembers = new mongoose.Schema({
+    name: { type: String, required: true },
+    surname: { type: String, required: true },
+    photoFile: { type: String, required: true },
+    role: { type: String, required: true },
+});
+
+let RoadMap = new mongoose.Schema({
+    task: { type: String, required: true, descr: 'Задача' },
+    deadline: { type: Date, required: true },
+    responsible: { type: String, required: true },
 });
 
 let ProjectSchema = new mongoose.Schema({
-    // dateCreation: Date,
     // owner: ObjectId,
-    prjId: mongoose.Schema.Types.ObjectId,
+    _id: mongoose.Schema.Types.ObjectId,
     // prjName: { type: String, required: [true, "Title required"], minlength: [6, "Too short"], unique: true, },
-    prjName: {type: String, descr: 'Название'},
-    prjUrl: String,
-    prjDescript: String,
-    prjLeader: String,
-    prjlogo: String,
-    prjCreated: { type: Date, default: Date.now },
-    prjModified: { type: Date, default: Date.now },
-    prjStack: String,
-    prjCapabilities: String,
-    prjNeeds: String,
+    name: { type: String, descr: 'Название' },
+    url: String,
+    descript: String,
+    leader: String,
+    logoFile: String,
+    stack: String,
+    capabilities: String,
+    needs: String,
+    members: [TeamMembers],
+    roadmap: [RoadMap],
+    created: { type: Date, default: Date.now },
+    modified: { type: Date, default: Date.now },
 },
     { versionKey: false, }
 );

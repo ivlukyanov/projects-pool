@@ -4,89 +4,86 @@ var express = require('express'),
     models = require('../models'),
     upload = require('../upload.js');
 
-// All projects
+// Get all projects
 router.get('/', (req, res) => {
-    models.Project.find({}, { _id: 1, prjLogo: 1, prjName: 1, prjUrl: 1, prjLeader: 1 }).lean().exec((err, projects) => {
-        if (err) throw err;
-        debug('FOUND ALL: ', JSON.stringify(projects));
-        res.render('projects', { data: projects, });
+    models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1, leader: 1 }).lean().exec((err, projects) => {
+        // todo: обработка ошибки mongo
+        res.render('projectList', {
+            data: projects,
+            title: 'Projects pool :: All',
+        });
     });
 });
 
-// Show register form
-router.get('/register', (req, res) => {
-    res.render('register', { data: [] });
+// Show project creating form
+router.get('/create', (req, res) => {
+    res.render('projectForm', {
+        data: [],
+        title: 'Projects pool :: Create',
+    });
 });
 
-// Parse register form
-router.post('/register', (req, res) => {
-    debug('BODY: ' + JSON.stringify(req.body));
+// Parse project creating form
+router.post('/create', (req, res) => {
     let project = new models.Project(req.body);
     project.save((err, createdProject) => {
         if (err) {
             //todo: валидация
-            debug('NOT SAVED: ', JSON.stringify(err));
-            res.render('register', { data: req.body, });
+            res.render('projectForm', { error: err.message, data: req.body, title: 'Error'});
         }
         else {
-            debug('SAVED ONE: ', JSON.stringify(createdProject));
-            res.render('project', { data: createdProject, })
+            res.render('projectView', { data: createdProject, })
         }
     });
 });
 
-// Get project
+// Get one project
 router.get('/:id', (req, res) => {
     models.Project.findOne({ _id: req.params.id }).lean().exec((err, project) => {
         if (err || !project) {
-            debug('NOT FOUND: ', err ? err.message : req.params.id);
-            res.render('project', { error: 'Проект не найден', });
+            res.render('projectView', { error: 'Проект не найден', title: 'Error' });
         }
         else {
-            debug('FOUND ONE: ', project);
-            res.render('project', { data: project, });
+            res.render('projectView', { data: project, });
         }
     });
 });
 
-// Edit project
+// Show edit form
 router.get('/:id/edit', (req, res) => {
     models.Project.findOne({ _id: req.params.id }).lean().exec((err, project) => {
         if (err || !project) {
-            debug('NOT FOUND: ', err ? err.message : req.params._id);
-            res.render('project', { error: 'Проект не найден', });
+            res.render('projectForm', { error: 'Проект не найден', title: 'Error' });
         }
         else {
-            debug('FOUND ONE: ', JSON.stringify(project));
-            res.render('register', { data: project, });
+            res.render('projectForm', { data: project, });
         }
     });
 });
 
-// Save project
+// Save one project
 router.post('/:id/edit', (req, res) => {
-    debug('BODY: ' + JSON.stringify(req.body));
     // todo: validate id https://code-examples.net/en/q/e3f9f4
 
-    upload.single('prjLogo')(req, res, err => {
-        if (err || !req.file) {
-            debug('FILE UPLOAD ERROR: ', err ? err.message : 'UNKNOWN');
-            debug('!!! FILE SAVED !!!');
-            console.log('ONE FILE: ', req.file);
-            console.log('ARRAY OF FILES: ', req.files);
-            res.render('project', { error: err && err.code === 'LIMIT_FIELD_VALUE' ? 'Превышен лимит файла' : 'Ошибка загрузки файла', });
+    upload.img.array('logoFile', 1)(req, res, err => {
+        if (err) {
+            switch (err.code) {
+                case 'LIMIT_FIELD_VALUE':
+                    errMessage = 'Превышен лимит файла';
+                    break;
+                default:
+                    errMessage = 'Ошибка загрузки файла';
+            }
+            res.render('projectForm', { error: errMessage, title: 'Error' });
         } else {
-            req.body.prjLogo = req.file.filename;
+            req.body.logoFile = req.files[0].filename;
             models.Project.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, strict: false }).lean().exec((err, project) => {
                 if (err || !project) {
                     // todo: валидация
-                    debug('NOT FOUND: ', err ? err.message : req.params._id);
-                    res.render('project', { error: 'Проект не найден!' + err.message, });
+                    res.render('projectForm', { error: 'Ошибка базы данных!' + err.message, title: 'Error' });
                 }
                 else {
-                    debug('--- MONGO NEW FIELD: ' + project.prjLogo)
-                    debug('SAVED: ', JSON.stringify(project._id));
-                    res.render('project', { data: project, });
+                    res.render('projectForm', { data: project, });
                 }
             });
         }

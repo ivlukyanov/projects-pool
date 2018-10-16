@@ -5,11 +5,11 @@ var express = require('express'),
 router.get('/', function (req, res, next) {
     debug(' --- MODE: ', req.app.get('env'));
     debug(' --- PRETTY: ', req.app.locals.pretty);
-    res.render('index');
+    res.render('index', {title: 'Projects pool :: Hello'});
 });
 
 router.get('/about', function (req, res, next) {
-    res.render('about');
+    res.render('about', {title: 'Projects pool :: About'});
 });
 
 module.exports = router;
