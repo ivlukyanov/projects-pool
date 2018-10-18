@@ -12,22 +12,22 @@ var multer = require('multer'),
                 cb(null, customFileName + path.extname(file.originalname))
             }
         }),
-        limits: {
-            fieldSize: 10 * 1024 * 1024, // todo: не ограничивает
-        },
-        fileFilter: (req, file, cb) => {
-            // todo: добавить проверку через "Magic byte" (file type)
-            switch (file.mimetype) {
-                case 'image/png':
-                case 'image/jpg':
-                case 'image/jpeg':
-                    cb(null, true);
-                    break;
-                default:
-                    cb(new multer.MulterError('Forbidden file type'))
-            }
-        }
-    })
+        // limits: {
+        //     fieldSize: 10 * 1024 * 1024, // todo: не ограничивает
+        // },
+        // fileFilter: (req, file, cb) => {
+        //     // todo: добавить проверку через "Magic byte" (file type)
+        //     switch (file.mimetype) {
+        //         case 'image/png':
+        //         case 'image/jpg':
+        //         case 'image/jpeg':
+        //             cb(null, true);
+        //             break;
+        //         default:
+        //             cb(new multer.MulterError('Forbidden file type'))
+        //     }
+        // }
+    }),
 
     doc = multer({
         storage: multer.diskStorage({
@@ -58,7 +58,7 @@ var multer = require('multer'),
                     cb(new multer.MulterError('Forbidden file type'))
             }
         }
-    })
+    });
 
 module.exports = {
     img: img,

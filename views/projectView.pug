@@ -12,7 +12,8 @@ block content
   else
     h1 Данные о проекте
     a(href='/projects/'+data._id)
-      img.img-circle.pull-left(src='/upload/img/'+data.logoFile, alt='Logo', width="100px")
+      if data.logoFile
+        img.img-rounded.pull-left(src='/upload/img/'+data.logoFile, alt='Logo', width="100px")
       h2(style='padding-top: 20px')=data.name
     .container-fluid
       .row

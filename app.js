@@ -1,14 +1,16 @@
-var createError = require('http-errors'),
-    express = require('express'),
-    cookieParser = require('cookie-parser'),
-    logger = require('morgan'),
-    db = require('./db.js'),
-    
-    indexRouter = require('./routes/index'),
-    usersRouter = require('./routes/users'),
-    projectsRouter = require('./routes/projects'),
+var createError = require('http-errors')
+    , express = require('express')
+    , cookieParser = require('cookie-parser')
+    , logger = require('morgan')
+    , db = require('./db.js')
+    , hash = require('pbkdf2-password')()
+    , session = require('express-session')
 
-    app = express();
+    , indexRouter = require('./routes/index')
+    , usersRouter = require('./routes/users')
+    , projectsRouter = require('./routes/projects')
+
+    , app = express()
 
 // view engine setup
 app.set('views', __dirname + '/views');
@@ -24,6 +26,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
+app.use(session({
+    resave: false, // don't save session if unmodified
+    saveUninitialized: false, // don't create session until something stored
+    secret: 'very strong secret line'
+}));
+// Session-persisted message middleware
+app.use(function (req, res, next) {
+    var err = req.session.error;
+    var msg = req.session.success;
+    delete req.session.error;
+    delete req.session.success;
+    res.locals.message = '';
+    if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
+    if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
+    next();
+});
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', indexRouter);

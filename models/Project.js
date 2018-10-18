@@ -15,7 +15,7 @@ let RoadMap = new mongoose.Schema({
 
 let ProjectSchema = new mongoose.Schema({
     // owner: ObjectId,
-    _id: mongoose.Schema.Types.ObjectId,
+    // _id: mongoose.Schema.Types.ObjectId,
     // prjName: { type: String, required: [true, "Title required"], minlength: [6, "Too short"], unique: true, },
     name: { type: String, descr: 'Название' },
     url: String,

@@ -13,7 +13,7 @@
             "internalConsoleOptions": "openOnFirstSessionStart",
             "env": {
                 "DEBUG": "pool:*",
-                "PORT": "80",
+                "PORT": "3000",
                 "NODE_ENV": "development"
             }
         },
@@ -28,7 +28,7 @@
             "internalConsoleOptions": "openOnFirstSessionStart",
             "env": {
                 "DEBUG": "pool:*",
-                "PORT": "80",
+                "PORT": "3000",
                 "NODE_ENV": "development"
             }
         }

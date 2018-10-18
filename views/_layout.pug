@@ -13,8 +13,10 @@ append body
 
     +navbar('Матрица проектов','dropdown_menu', 'default', '/')
       +nav_item('/about', (activepage === 'about') ? 'active' : '') Что это?
-      +nav_item('/projects/create', (activepage === 'register') ? 'active' : '') Регистрация
+      +nav_item('/register', (activepage === 'register') ? 'active' : '') Регистрация
       +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все проекты
+      +nav_item('/login', (activepage === 'login') ? 'active' : '') Войти
+      +nav_item('/logout') Выйти
 
     block content
 

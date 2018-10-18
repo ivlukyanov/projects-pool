@@ -1,0 +1,23 @@
+extends _layout
+
+block activenav
+  - var activepage = 'login'
+
+block content
+  h1 Вход на сайт
+  div(style='padding-top: 30px')
+  if message
+    +panel-danger('Ошибка')
+      =message
+  form.form-horizontal(method='post',action='/login')
+    .form-group
+      label.control-label.col-sm-5(for='login') Email
+      .col-sm-3
+        input.form-control(type='text',name='login',id='login')
+    .form-group
+      label.control-label.col-sm-5(for='password') Пароль
+      .col-sm-3
+        input.form-control(type='text',name='password',id='password')
+    .form-group
+      .col-sm-offset-5.col-sm-3
+        input.btn.btn-default(type='submit',value='Войти')

@@ -1,24 +1,32 @@
 include icons
 //- Input control with form-group wrapper
-mixin input(type,name,id,label,placeholder,value)
+mixin input(type,name,id,label,placeholder,value,required)
+    - if (!value) value = undefined
+    - var required = (!required) ? false : true
     .form-group
         label(for=id) #{label}
-        input.form-control(type=type,name=name,id=id,placeholder=placeholder,value=value)
+        input.form-control(type=type,name=name,id=id,placeholder=placeholder,value=value,required=required)
 
 //- Simple form input control without a form-group
-mixin input-simple(type,name,id,placeholder,value)
-    input.form-control(type=type,name=name,id=id,placeholder=placeholder,value=value)
+mixin input-simple(type,name,id,placeholder,value,required)
+    - if (!value) value = undefined
+    - var required = (!required) ? false : true
+    input.form-control(type=type,name=name,id=id,placeholder=placeholder,value=value,required=required)
 
 //- Textarea with form-group wrapper
-mixin textarea(rows,name,id,label,placeholder,value)
+mixin textarea(rows,name,id,label,placeholder,value,required)
+    - if (!value) value = undefined
+    - var required = (!required) ? false : true
     .form-group
         label(for=id) #{label}
-        textarea.form-control(rows=rows,name=name,id=id,placeholder=placeholder)
+        textarea.form-control(rows=rows,name=name,id=id,placeholder=placeholder,required=required)
             = value
 
 //- Simple textarea without form-group 
-mixin textarea-simple(rows,name,id,label,placeholder,value)
-    textarea.form-control(rows=rows,name=name,id=id,placeholder=placeholder)
+mixin textarea-simple(rows,name,id,label,placeholder,value,required)
+    - if (!value) value = undefined
+    - var required = (!required) ? false : true
+    textarea.form-control(rows=rows,name=name,id=id,placeholder=placeholder,required=required)
         = value
 
 //- Checkbox - Block style
