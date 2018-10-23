@@ -7,7 +7,7 @@ block content
   h1 Вход на сайт
   div(style='padding-top: 30px')
   if message
-    +panel-danger('Ошибка')
+    +panel-warning('Внимание')
       =message
   form.form-horizontal(method='post',action='/login')
     .form-group

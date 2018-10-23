@@ -26,24 +26,18 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-    auth.authenticate(req.body.login, req.body.password, function (err, user) {
-        if (user) {
-            // Regenerate session when signing in
-            // to prevent fixation
-            req.session.regenerate(function () {
-                // Store the user's primary key
-                // in the session store to be retrieved,
-                // or in this case the entire user object
-                req.session.user = user;
-                req.session.success = 'Authenticated as ' + user.name
-                    + ' click to <a href="/logout">logout</a>. '
-                    + ' You may now access <a href="/restricted">/restricted</a>.';
-                res.redirect('back');
-            });
-        } else {
-            req.session.error = 'Authentication failed, please check your '
-                + ' username and password.';
+    auth.authenticate(req.body.login.trim(), req.body.password.trim(), function (err, user) {
+        if (err) {
+            req.session.error = err.message;
             res.redirect('/login');
+        } else {
+            // Regenerate session when signing in to prevent fixation
+            req.session.regenerate(function () {
+                // Store the user object in the session store to be retrieved
+                req.session.user = user;
+                req.session.success = 'Authenticated as ' + user.name;
+                res.redirect('/projects/my');
+            })
         }
     });
 });

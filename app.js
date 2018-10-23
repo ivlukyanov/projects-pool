@@ -1,9 +1,8 @@
 var createError = require('http-errors')
     , express = require('express')
-    , cookieParser = require('cookie-parser')
+    // , cookieParser = require('cookie-parser')
     , logger = require('morgan')
     , db = require('./db.js')
-    , hash = require('pbkdf2-password')()
     , session = require('express-session')
 
     , indexRouter = require('./routes/index')
@@ -17,7 +16,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
 // dev options 
-if (app.get('env') == 'development') {
+if (app.get('env').trim() == 'development') {
     app.locals.pretty = true;
 }
 
@@ -25,11 +24,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(session({
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until something stored
-    secret: 'very strong secret line'
+    secret: '9nnbUSngV{f{z5zF2KLJJde*Cbx8m@sp',
+    cookie: {
+        maxAge: 7 * 24 * 3600 * 1000,
+    }
 }));
 // Session-persisted message middleware
 app.use(function (req, res, next) {
@@ -37,9 +39,7 @@ app.use(function (req, res, next) {
     var msg = req.session.success;
     delete req.session.error;
     delete req.session.success;
-    res.locals.message = '';
-    if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
-    if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
+    res.locals.message = err || msg || '';
     next();
 });
 app.use(express.static(__dirname + '/public'));

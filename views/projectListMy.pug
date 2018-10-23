@@ -1,10 +1,10 @@
 extends _layout
 
 block activenav
-  - var activepage = 'projects'
+  - var activepage = 'projects_my'
 
 block content
-  h1 Все проекты
+  h1 Мои проекты
   
   table.table(class="table-striped")
     thead
@@ -33,3 +33,5 @@ block content
           td #{row['leader']}
           td 
             a(href="/projects/" + row['_id']) Смотреть
+            | 
+            a(href="/projects/" + row['_id'] + "/edit") Изменить

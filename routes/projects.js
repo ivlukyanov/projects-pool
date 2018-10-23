@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     debug = require('debug')('pool:projects'),
     models = require('../models'),
-    upload = require('../upload.js');
+    upload = require('../upload.js'),
+    auth = require('../auth.js')
 
 // Get all projects
 router.get('/', (req, res) => {
@@ -11,6 +12,17 @@ router.get('/', (req, res) => {
         res.render('projectList', {
             data: projects,
             title: 'Projects pool :: All',
+        });
+    });
+});
+
+// Get user projects
+router.get('/my', auth.restrict, (req, res) => {
+    models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1, leader: 1 }).lean().exec((err, projects) => {
+        // todo: обработка ошибки mongo
+        res.render('projectListMy', {
+            data: projects,
+            title: 'Projects pool :: My projects',
         });
     });
 });
@@ -28,7 +40,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Show edit form
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', auth.restrict, (req, res) => {
     models.Project.findOne({ _id: req.params.id }).lean().exec((err, project) => {
         if (err || !project) {
             res.render('projectForm', { error: 'Проект не найден', title: 'Error' });
