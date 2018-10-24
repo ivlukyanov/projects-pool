@@ -20,7 +20,6 @@ let ProjectSchema = new mongoose.Schema({
     name: { type: String, descr: 'Название' },
     url: String,
     descript: String,
-    leader: String,
     logoFile: String,
     stack: String,
     capabilities: String,
@@ -29,6 +28,7 @@ let ProjectSchema = new mongoose.Schema({
     roadmap: [RoadMap],
     created: { type: Date, default: Date.now },
     modified: { type: Date, default: Date.now },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 },
     { versionKey: false, }
 );

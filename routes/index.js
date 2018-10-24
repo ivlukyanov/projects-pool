@@ -73,6 +73,7 @@ router.post('/register', (req, res) => {
                         needs: req.body.prjNeeds,
                         capabilities: req.body.prjCapabilities,
                         logoFile: req.body.prjLogoFile,
+                        owner: user._id,
                     });
                     project.save((err, createdProject) => {
                         if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' });
