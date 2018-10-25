@@ -19,7 +19,12 @@ let UserSchema = new mongoose.Schema({
 	created: { type: Date, default: Date.now },
 	modified: { type: Date, default: Date.now },
 },
-	{ versionKey: false, }
+	{
+		versionKey: false,
+		toJSON: {
+			virtuals: true
+		}
+	}
 );
 
 UserSchema.methods = {
@@ -38,8 +43,13 @@ UserSchema.virtual('password')
 		this.salt = Math.random() + '';
 		this.hashedPassword = this.encryptPassword(password);
 	})
-	.get(() => {
+	.get(function () {
 		return this._plainPassword;
+	})
+
+UserSchema.virtual('fullname')
+	.get(function () {
+		return this.name + ' ' + this.surname;
 	})
 
 

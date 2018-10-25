@@ -7,7 +7,9 @@ var express = require('express'),
 
 // Get all projects
 router.get('/', (req, res) => {
-    models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1, leader: 1 }).lean().exec((err, projects) => {
+    models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1 })
+        .populate({ path: 'owner', select: 'name surname' })
+        .exec((err, projects) => {
         // todo: обработка ошибки mongo
         res.render('projectList', {
             data: projects,
