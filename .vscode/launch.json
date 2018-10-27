@@ -10,7 +10,7 @@
             "name": "debug",
             "program": "${workspaceFolder}/bin/www",
             "console": "integratedTerminal",
-            "internalConsoleOptions": "openOnFirstSessionStart",
+            "internalConsoleOptions": "openOnSessionStart",
             "env": {
                 "DEBUG": "pool:*",
                 "PORT": "3000",

@@ -40,6 +40,7 @@ app.use(function (req, res, next) {
     delete req.session.error;
     delete req.session.success;
     res.locals.message = err || msg || '';
+    res.locals.session = req.session;
     next();
 });
 app.use(express.static(__dirname + '/public'));

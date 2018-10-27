@@ -10,23 +10,26 @@ router.get('/', (req, res) => {
     models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1 })
         .populate({ path: 'owner', select: 'name surname' })
         .exec((err, projects) => {
-        // todo: обработка ошибки mongo
-        res.render('projectList', {
-            data: projects,
-            title: 'Projects pool :: All',
+            // todo: обработка ошибки mongo
+            res.render('projectList', {
+                data: projects,
+                title: 'Projects pool :: All',
+            });
         });
-    });
 });
 
 // Get user projects
 router.get('/my', auth.restrict, (req, res) => {
-    models.Project.find({}, { _id: 1, logoFile: 1, name: 1, url: 1, leader: 1 }).lean().exec((err, projects) => {
-        // todo: обработка ошибки mongo
-        res.render('projectListMy', {
-            data: projects,
-            title: 'Projects pool :: My projects',
+    models.Project.find({owner: req.session.user._id }, { _id: 1, logoFile: 1, name: 1, url: 1, leader: 1 })
+        .populate({ path: 'owner', select: 'name surname' })
+        .exec((err, projects) => {
+            // todo: обработка ошибки mongo
+            if (err) throw err;
+            res.render('projectListMy', {
+                data: projects,
+                title: 'Projects pool :: My projects',
+            });
         });
-    });
 });
 
 // Get one project

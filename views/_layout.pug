@@ -13,12 +13,15 @@ append body
 
     +navbar('Матрица проектов','dropdown_menu', 'default', '/')
       +nav_item('/about', (activepage === 'about') ? 'active' : '') Что это?
-      +nav_item('/register', (activepage === 'register') ? 'active' : '') Регистрация
-      +nav_item_dropdown('/projects', (activepage === 'projects') ? 'active' : '')&attributes({label:'Проекты'})
-        +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все
-        +nav_item('/projects/my', (activepage === 'projects_my') ? 'active' : '') Мои
-      +nav_item('/login', (activepage === 'login') ? 'active' : '') Войти
-      +nav_item('/logout') Выйти
+      if session.user
+        //- +nav_item_dropdown('/projects', (activepage === 'projects') ? 'active' : '')&attributes({label:'Проекты'})
+        +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все проекты
+        +nav_item('/projects/my', (activepage === 'projects_my') ? 'active' : '') Мои проекты
+        +nav_item('/logout') Выйти
+      else
+        +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все проекты
+        +nav_item('/register', (activepage === 'register') ? 'active' : '') Регистрация
+        +nav_item('/login', (activepage === 'login') ? 'active' : '') Войти
 
     block content
 

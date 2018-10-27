@@ -45,7 +45,7 @@ router.post('/login', function (req, res) {
 
 
 // Show register form
-router.get('/register', function (req, res) {
+router.get('/register', auth.guestonly, function (req, res) {
     res.render('registerForm', { data: [], title: 'Projects pool :: Register', });
 });
 
@@ -77,7 +77,14 @@ router.post('/register', (req, res) => {
                     });
                     project.save((err, createdProject) => {
                         if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' });
-                        else res.render('projectView', { data: createdProject, })
+                        else req.session.regenerate(function () {
+                            // Store the user object in the session store to be retrieved
+                            req.session.user = user;
+                            req.session.success = 'Authenticated as ' + user.name;
+                            res.locals.session = req.session;
+                            res.render('projectView', { data: createdProject, })
+                        })
+
                     });
                 }
             });

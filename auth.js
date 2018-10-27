@@ -18,7 +18,17 @@ function restrict(req, res, next) {
 	}
 }
 
+function guestonly(req, res, next) {
+	if (!req.session.user) {
+		next();
+	} else {
+		req.session.error = 'Only for new users!';
+		res.redirect('/projects/my');
+	}
+}
+
 module.exports = {
 	authenticate: authenticate,
 	restrict: restrict,
+	guestonly: guestonly,
 }
