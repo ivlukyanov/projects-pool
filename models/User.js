@@ -27,12 +27,17 @@ let UserSchema = new mongoose.Schema({
 	}
 );
 
+UserSchema.pre('save', function (next) {
+	this.modified = Date.now;
+	next();
+})
+
 UserSchema.methods = {
-	encryptPassword : function (password) {
+	encryptPassword: function (password) {
 		// return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
 		return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 	},
-	checkPassword : function (password) {
+	checkPassword: function (password) {
 		return this.encryptPassword(password) === this.hashedPassword;
 	}
 }

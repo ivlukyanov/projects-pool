@@ -51,45 +51,53 @@ router.get('/register', auth.guestonly, function (req, res) {
 
 // Parse register form
 router.post('/register', (req, res) => {
-    upload.img.array('prjLogoFile', 1)(req, res, err => {
-        if (err) {
-            res.render('registerForm', { error: 'Ошибка загрузки файла: ' + err.message, data: req.body, title: 'Error' });
-        } else {
-            req.body.prjLogoFile = (req.files.length) ? req.files[0].filename : '';
-            let user = new models.User({
-                name: req.body.userName,
-                surname: req.body.userSurName,
-                email: req.body.userEmail,
-                password: req.body.userPassword,
-            });
-            user.save((err, createdUser) => {
-                if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' })
-                else {
-                    let project = new models.Project({
-                        name: req.body.prjName,
-                        url: req.body.prjUrl,
-                        descript: req.body.prjDescript,
-                        stack: req.body.prjStack,
-                        needs: req.body.prjNeeds,
-                        capabilities: req.body.prjCapabilities,
-                        logoFile: req.body.prjLogoFile,
-                        owner: user._id,
-                    });
-                    project.save((err, createdProject) => {
-                        if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' });
-                        else req.session.regenerate(function () {
-                            // Store the user object in the session store to be retrieved
-                            req.session.user = user;
-                            req.session.success = 'Authenticated as ' + user.name;
-                            res.locals.session = req.session;
-                            res.render('projectView', { data: createdProject, })
-                        })
+    const filesArr = [
+        { name: 'prjPresentationFile', maxCount: 1 },
+        { name: 'prjWhitePaperFile', maxCount: 1 },
+        { name: 'prjLogoFile', maxCount: 1 },
+        { name: 'prjCoverImgFile', maxCount: 1 },
+    ];
+    Promise.all([
+        upload.file.fields(filesArr)(req, res, (err) => {
+            if (err) throw err;
+        })
+    ]).then((values) => {
+        let user = new models.User({
+            name: req.body.userName,
+            surname: req.body.userSurName,
+            email: req.body.userEmail,
+            password: req.body.userPassword,
+        });
+        let project = new models.Project({
+            name: req.body.prjName,
+            url: req.body.prjUrl,
+            descript: req.body.prjDescript,
+            stack: req.body.prjStack,
+            needs: req.body.prjNeeds,
+            capabilities: req.body.prjCapabilities,
+            logoFile: req.body.prjLogoFile,
+            owner: user._id,
+        })
+        return Promise.all([
+            user.save(),
+            project.save(),
+        ])
+    }).then((values) => {
+        req.session.regenerate(function () {
+            var user = values[0];
+            var project = values[1];
+            req.session.success = 'Authenticated as ' + user.name;
+            res.locals.session = req.session;
+            res.render('projectView', { data: project, })
+        })
+    }).catch((err) => {
+        res.render('registerForm', { error: err.message, data: req.body, title: 'Error' });
+    })
 
-                    });
-                }
-            });
-        }
-    });
+    // if (err) {
+    //     res.render('registerForm', { error: 'Ошибка загрузки файла: ' + err.message, data: req.body, title: 'Error' });
+    // if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' })
+    // prjLogoFile = (req.files.length) ? req.files[0].filename : '';
 });
 
 module.exports = router;

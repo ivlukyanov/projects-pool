@@ -1,6 +1,8 @@
 const mongoose = require('mongoose'),
     debug = require('debug')('pool:db');
 
+mongoose.Promise = global.Promise;
+
 mongoose.connect('mongodb://127.0.0.1/pool', {
     useNewUrlParser: true,
     useCreateIndex: true,

@@ -1,6 +1,24 @@
-var multer = require('multer'),
+const multer = require('multer'),
     path = require('path'),
     crypto = require('crypto'),
+    fs = require('fs'),
+
+    uploadFolder = './public/upload/',
+
+    file = multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                filesFolder = uploadFolder + 'files';
+                if (!fs.existsSync(filesFolder))
+                    fs.mkdirSync(filesFolder);
+                cb(null, filesFolder);
+            },
+            filename: function (req, file, cb) {
+                let customFileName = crypto.randomBytes(10).toString('hex');
+                cb(null, customFileName + path.extname(file.originalname))
+            }
+        }),
+    }),
 
     img = multer({
         storage: multer.diskStorage({
@@ -9,24 +27,25 @@ var multer = require('multer'),
             },
             filename: function (req, file, cb) {
                 let customFileName = crypto.randomBytes(10).toString('hex');
+                // let customFileName = req.session.user._id + '_' + crypto.randomBytes(10).toString('hex');
                 cb(null, customFileName + path.extname(file.originalname))
             }
         }),
-        // limits: {
-        //     fieldSize: 10 * 1024 * 1024, // todo: не ограничивает
-        // },
-        // fileFilter: (req, file, cb) => {
-        //     // todo: добавить проверку через "Magic byte" (file type)
-        //     switch (file.mimetype) {
-        //         case 'image/png':
-        //         case 'image/jpg':
-        //         case 'image/jpeg':
-        //             cb(null, true);
-        //             break;
-        //         default:
-        //             cb(new multer.MulterError('Forbidden file type'))
-        //     }
-        // }
+        limits: {
+            fieldSize: 10 * 1024 * 1024, // todo: не ограничивает
+        },
+        fileFilter: (req, file, cb) => {
+            // todo: добавить проверку через "Magic byte" (file type)
+            switch (file.mimetype) {
+                case 'image/png':
+                case 'image/jpg':
+                case 'image/jpeg':
+                    cb(null, true);
+                    break;
+                default:
+                    cb(new Error('Forbidden file type'))
+            }
+        }
     }),
 
     doc = multer({
@@ -55,12 +74,13 @@ var multer = require('multer'),
                     cb(null, true);
                     break;
                 default:
-                    cb(new multer.MulterError('Forbidden file type'))
+                    cb(new Error('Forbidden file type'))
             }
         }
     });
 
 module.exports = {
+    file: file,
     img: img,
     doc: doc
 };

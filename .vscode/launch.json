@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "debug",
             "program": "${workspaceFolder}/bin/www",
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
             "env": {
                 "DEBUG": "pool:*",
