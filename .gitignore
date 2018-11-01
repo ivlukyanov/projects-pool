@@ -21,4 +21,7 @@ Desktop.ini
 
 # IDEs
 .idea
+.vscode
+
+# Other
 task.md
