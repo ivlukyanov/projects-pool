@@ -50,54 +50,45 @@ router.get('/register', auth.guestonly, function (req, res) {
 });
 
 // Parse register form
-router.post('/register', (req, res) => {
-    const filesArr = [
-        { name: 'prjPresentationFile', maxCount: 1 },
-        { name: 'prjWhitePaperFile', maxCount: 1 },
-        { name: 'prjLogoFile', maxCount: 1 },
-        { name: 'prjCoverImgFile', maxCount: 1 },
-    ];
-    Promise.all([
-        upload.file.fields(filesArr)(req, res, (err) => {
-            if (err) throw err;
-        })
-    ]).then((values) => {
+router.post('/register', async (req, res) => {
+    try {
         let user = new models.User({
             name: req.body.userName,
             surname: req.body.userSurName,
             email: req.body.userEmail,
             password: req.body.userPassword,
         });
+        await upload.saveFiles([
+            { file: req.files.prjPresentationFile, folder: 'doc', prefix: user._id },
+            { file: req.files.prjWhitePaperFile, folder: 'doc', prefix: user._id },
+            { file: req.files.prjLogoFile, folder: 'img', prefix: user._id },
+            { file: req.files.prjCoverImgFile, folder: 'img', prefix: user._id },
+        ])
         let project = new models.Project({
+            owner: user._id,
             name: req.body.prjName,
             url: req.body.prjUrl,
             descript: req.body.prjDescript,
             stack: req.body.prjStack,
             needs: req.body.prjNeeds,
             capabilities: req.body.prjCapabilities,
-            logoFile: req.body.prjLogoFile,
-            owner: user._id,
-        })
-        return Promise.all([
+            presentationFile: req.files.prjPresentationFile ? req.files.prjPresentationFile.name : '',
+            whitePaperFile: req.files.prjWhitePaperFile ? req.files.prjWhitePaperFile.name : '',
+            logoFile: req.files.prjLogoFile ? req.files.prjLogoFile.name : '',
+            coverImgFile: req.files.prjCoverImgFile ? req.files.prjCoverImgFile.name : '',
+        });
+        [user, project] = await Promise.all([
             user.save(),
-            project.save(),
+            project.save()
         ])
-    }).then((values) => {
-        req.session.regenerate(function () {
-            var user = values[0];
-            var project = values[1];
+        req.session.regenerate(() => {
             req.session.success = 'Authenticated as ' + user.name;
             res.locals.session = req.session;
             res.render('projectView', { data: project, })
         })
-    }).catch((err) => {
-        res.render('registerForm', { error: err.message, data: req.body, title: 'Error' });
-    })
-
-    // if (err) {
-    //     res.render('registerForm', { error: 'Ошибка загрузки файла: ' + err.message, data: req.body, title: 'Error' });
-    // if (err) res.render('registerForm', { error: err.message, data: req.body, title: 'Error' })
-    // prjLogoFile = (req.files.length) ? req.files[0].filename : '';
+    } catch (err) {
+        return res.render('registerForm', { error: err.message, data: req.body, title: 'DB Error' });
+    }
 });
 
 module.exports = router;

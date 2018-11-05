@@ -1,9 +1,9 @@
-var createError = require('http-errors')
+const createError = require('http-errors')
     , express = require('express')
-    // , cookieParser = require('cookie-parser')
     , logger = require('morgan')
     , db = require('./db.js')
     , session = require('express-session')
+    , fileUpload = require('express-fileupload')
 
     , indexRouter = require('./routes/index')
     , usersRouter = require('./routes/users')
@@ -43,6 +43,13 @@ app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
 });
+app.use(fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 },
+    createParentPath: true,
+    preserveExtension: 5,
+    abortOnLimit: true,
+    safeFileNames: false,
+}));
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', indexRouter);
