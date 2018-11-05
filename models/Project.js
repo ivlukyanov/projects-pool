@@ -36,4 +36,10 @@ let ProjectSchema = new mongoose.Schema({
     { versionKey: false, }
 );
 
+ProjectSchema.pre('save', function (next) {
+    if (this.url.search(/http/i) == -1)
+        this.url = 'http://' + this.url;
+	next();
+})
+
 module.exports = mongoose.model('Project', ProjectSchema);

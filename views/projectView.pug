@@ -10,30 +10,42 @@ block content
     br
     a(href='/projects') Все проекты
   else
-    h1 Данные о проекте
-    a(href='/projects/'+data._id)
-      if data.logoFile
-        img.img-rounded.pull-left(src='/upload/img/'+data.logoFile, alt='Logo', width="100px")
-      h2(style='padding-top: 20px')=data.name
-    .container-fluid
+    .container-fluid.project
+      h1 Данные о проекте
+      a.title(href='/projects/'+data._id)
+        if data.logoFile
+          img.img-rounded.pull-left(src='/upload/img/'+data.logoFile, alt='Logo', width='100px')
+        else
+          img.img-rounded.pull-left(src='/img/no-logo.png', alt='NoLogo', width='100px')
+        h2=data.name
+
       .row
         table.table.table-striped
           tr
-            td.col-xs-2 URL:
-            td.col-xs-10 #{data.url}
-          tr
-            td Описание:
-            td #{data.descript}
+            td.col-xs-2 Описание:
+            td.col-xs-10=data.descript
           tr
             td Лидер:
-            td #{data.leader}
+            td=data.owner.fullname
           tr
             td Стек технологий:
-            td #{data.stack}
+            td=data.stack
           tr
             td Возможности:
-            td #{data.capabilities}
+            td=data.capabilities
           tr
             td Потребности:
-            td #{data.needs}
-    a(href='/projects/'+data._id+'/edit') Изменить
+            td=data.needs
+          tr
+            td Презентация:
+            td
+              a.btn.btn-default.btn-xs(href='/upload/doc/'+data.presentationFile, target='_blank') Скачать файл
+          tr
+            td White Paper:
+            td
+              a.btn.btn-default.btn-xs(href='/upload/doc/'+data.whitePaperFile, target='_blank') Скачать файл
+              
+      a.btn.btn-primary(href=data.url, target='_blank') Перейти на сайт проекта
+      if session.user && session.user._id == data.owner._id
+        | 
+        a.btn.btn-default(href='/projects/'+data._id+'/edit') Редактировать проект

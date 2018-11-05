@@ -34,7 +34,9 @@ router.get('/my', auth.restrict, (req, res) => {
 
 // Get one project
 router.get('/:id', (req, res) => {
-    models.Project.findOne({ _id: req.params.id }).lean().exec((err, project) => {
+    models.Project.findOne({ _id: req.params.id })
+        .populate({path: 'owner', select: 'name surname'})
+        .exec((err, project) => {
         if (err || !project) {
             res.render('projectView', { error: 'Проект не найден', title: 'Error' });
         }
