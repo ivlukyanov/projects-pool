@@ -2,3 +2,5 @@ body { padding-bottom: 70px; }
 footer { padding-top: 10px; width: 1140px; left: 50% !important; margin: 0% -570px;}
 .project > a.title > img {margin: 20px 20px 20px 0}
 .project > a.title > h2 {padding: 40px 0 15px 0}
+.reg-btn { background-color: #7B6D3F }
+.reg-btn>a:hover { color: #0E2134 !important }

@@ -11,7 +11,7 @@ block content
       =error
   .row
     .col-sm-offset-1.col-sm-10
-      form.form(method='post',enctype='multipart/form-data')
+      form(method='post',enctype='multipart/form-data')
         .row.form-group
           label.col-xs-2.control-label(for='userEmail') Создаем аккаунт
           .col-xs-5
@@ -35,19 +35,23 @@ block content
         .row.form-group
           label.control-label.col-xs-2(for='prjDescript') Описание
           .col-xs-10
-            textarea.form-control(rows=3,name='prjDescript',id='prjDescript',placeholder='Вкратце о проекте (2-3 предложения)',value=data.prjDescript,required=true)
+            textarea.form-control(rows=3,name='prjDescript',id='prjDescript',placeholder='Вкратце о проекте (2-3 предложения)',required=true)
+              =data.prjDescript
         .row.form-group
           label.control-label.col-xs-2(for='prjStack') Стек технологий
           .col-xs-10
-            textarea.form-control(rows=2,name='prjStack',id='prjStack',placeholder='На каких технологиях разрабатывается проект?',value=data.prjStack)
+            textarea.form-control(rows=2,name='prjStack',id='prjStack',placeholder='На каких технологиях разрабатывается проект?')
+              =data.prjStack
         .row.form-group
           label.control-label.col-xs-2(for='prjCapabilities') Ваши возможности
           .col-xs-10
-            textarea.form-control(rows=2,name='prjCapabilities',id='prjCapabilities',placeholder='Чем вы можете помочь сообществу?',value=data.prjCapabilities)
+            textarea.form-control(rows=2,name='prjCapabilities',id='prjCapabilities',placeholder='Чем вы можете помочь сообществу?')
+              =data.prjCapabilities
         .row.form-group
           label.control-label.col-xs-2(for='prjNeeds') Ваши потребности
           .col-xs-10
-            textarea.form-control(rows=2,name='prjNeeds',id='prjNeeds',placeholder='Что нужно вам для реализации проекта?',value=data.prjNeeds)
+            textarea.form-control(rows=2,name='prjNeeds',id='prjNeeds',placeholder='Что нужно вам для реализации проекта?')
+              =data.prjNeeds
         .row.form-group
           label.control-label.col-xs-2(for='prjPresentationFile') Презентация
           .col-xs-10

@@ -20,8 +20,8 @@ append body
         +nav_item('/logout') Выйти
       else
         +nav_item('/projects', (activepage === 'projects') ? 'active' : '') Все проекты
-        +nav_item('/register', (activepage === 'register') ? 'active' : '') Регистрация
         +nav_item('/login', (activepage === 'login') ? 'active' : '') Войти
+        +nav_item('/register', (activepage === 'register') ? 'active' : 'reg-btn') Регистрация
 
     block content
 

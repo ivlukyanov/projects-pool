@@ -1,25 +1,57 @@
 extends _layout
 
 block activenav
-  - var activepage = 'projectEdit'
+  - var activepage = 'project_edit'
 
 block content
   h1 Заполните форму своего проекта
+  br
   if error
     +panel-danger('Ошибка формы')
       =error
   .row
-    .col-sm-8
-      form(method='post',enctype='multipart/form-data')
+    .col-sm-offset-1.col-sm-10
+      form.form-horizontal(method='post',enctype='multipart/form-data')
         input(name='_id', value=data._id, hidden=true)
-        +input('text','name','name','Название','Название проекта',data.name)
-        +input('text','url','url','URL','Адрес сайта',data.url)
-        +textarea(3,'descript','descript','Описание','Вкратце о проекте (2-3 предложения)',data.descript)
-        //- todo: связать лидера с моделью User
-        +input('text','leader','leader','Лидер','Глава проекта',data.leader)
+        .form-group
+          label.col-xs-2.control-label(for='name') Название
+          .col-xs-10
+            input.form-control(type='text',name='name',id='name',placeholder='Как называется ваш проект',value=data.name,required=true)
+        .form-group
+          label.col-xs-2.control-label(for='url') URL
+          .col-xs-10
+            input.form-control(type='text',name='url',id='url',placeholder='Адрес сайта',value=data.url,required=true)
+        .form-group
+          label.col-xs-2.control-label(for='descript') Описание
+          .col-xs-10
+            textarea.form-control(rows=3,name='descript',id='descript',placeholder='Вкратце о проекте (2-3 предложения)')
+              =data.descript
         //- todo: добавить показ текущего лого
-        +input('file','logoFile','logoFile','Логотип','')
+        .form-group
+          label.col-xs-2.control-label(for='logoFile') Логотип
+          .col-xs-1
+            if data.logoFile
+              img.img-rounded.pull-left(src='/upload/img/' + data.logoFile, alt='Logo', width="40px")
+            else
+              img.img-rounded.pull-left(src='/img/no-logo.png', alt='NoLogo', width="40px")
+          .col-xs-9
+            input.form-control(type='file',name='logoFile',id='logoFile',value=data.logoFile,required=false)
+        .form-group
+          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
+          .col-xs-10
+            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
+              =data.descript
         +textarea(2,'stack','stack','Стек технологий','На каких технологиях разрабатывается проект?',data.stack)
+        .form-group
+          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
+          .col-xs-10
+            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
+              =data.descript
         +textarea(2,'capabilities','capabilities','Ваши возможности','Чем вы можете помочь сообществу?',data.capabilities)
+        .form-group
+          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
+          .col-xs-10
+            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
+              =data.descript
         +textarea(2,'needs','needs','Ваши потребности','Что нужно вам для реализации проекта?',data.needs)
         +submit('Сохранить')
