@@ -14,21 +14,61 @@ block content
       form.form-horizontal(method='post',enctype='multipart/form-data')
         input(name='_id', value=data._id, hidden=true)
         .form-group
-          label.col-xs-2.control-label(for='name') Название
+          label.control-label.col-xs-2(for='name') Название
           .col-xs-10
             input.form-control(type='text',name='name',id='name',placeholder='Как называется ваш проект',value=data.name,required=true)
         .form-group
-          label.col-xs-2.control-label(for='url') URL
+          label.control-label.col-xs-2(for='url') URL
           .col-xs-10
             input.form-control(type='text',name='url',id='url',placeholder='Адрес сайта',value=data.url,required=true)
         .form-group
-          label.col-xs-2.control-label(for='descript') Описание
+          label.control-label.col-xs-2(for='descript') Описание
           .col-xs-10
             textarea.form-control(rows=3,name='descript',id='descript',placeholder='Вкратце о проекте (2-3 предложения)')
               =data.descript
-        //- todo: добавить показ текущего лого
         .form-group
-          label.col-xs-2.control-label(for='logoFile') Логотип
+          label.control-label.col-xs-2(for='stack') Стек технологий
+          .col-xs-10
+            textarea.form-control(rows=2,name='stack',id='stack',placeholder='На каких технологиях разрабатывается проект?')
+              =data.stack
+        .form-group
+          label.control-label.col-xs-2(for='capabilities') Возможности
+          .col-xs-10
+            textarea.form-control(rows=2,name='capabilities',id='capabilities',placeholder='Чем вы можете помочь сообществу?')
+              =data.capabilities
+        .form-group
+          label.control-label.col-xs-2(for='needs') Потребности
+          .col-xs-10
+            textarea.form-control(rows=2,name='needs',id='needs',placeholder='Что нужно вам для реализации проекта?')
+              =data.needs
+
+        // todo отформатировать вывод 4-х файлов:
+
+        // Преза
+        .form-group
+          label.control-label.col-xs-2(for='presentationFile') Презентация
+          .col-xs-1
+            if data.presentationFile
+              a.btn.btn-default.btn-xs(href='/upload/doc/'+data.presentationFile, target='_blank') Скачать
+            else
+              span.label.label-default Нет
+          .col-xs-9
+            input.form-control(type='file',name='presentationFile',id='presentationFile',required=true)
+        
+        // WP
+        .form-group
+          label.control-label.col-xs-2(for='whitePaperFile') White Paper
+          .col-xs-1
+            if data.whitePaperFile
+              a.btn.btn-default.btn-xs(href='/upload/doc/'+data.whitePaperFile, target='_blank') Скачать
+            else
+              span.label.label-default Нет
+          .col-xs-9
+            input.form-control(type='file',name='whitePaperFile',id='whitePaperFile',required=false)
+        
+        // Лого
+        .form-group
+          label.control-label.col-xs-2(for='logoFile') Логотип
           .col-xs-1
             if data.logoFile
               img.img-rounded.pull-left(src='/upload/img/' + data.logoFile, alt='Logo', width="40px")
@@ -36,22 +76,18 @@ block content
               img.img-rounded.pull-left(src='/img/no-logo.png', alt='NoLogo', width="40px")
           .col-xs-9
             input.form-control(type='file',name='logoFile',id='logoFile',value=data.logoFile,required=false)
+        
+        // Фон
         .form-group
-          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
-          .col-xs-10
-            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
-              =data.descript
-        +textarea(2,'stack','stack','Стек технологий','На каких технологиях разрабатывается проект?',data.stack)
+          label.control-label.col-xs-2(for='coverImgFile') Картинка на фон
+          .col-xs-1
+            if data.coverImgFile
+              a.btn.btn-default.btn-xs(href='/upload/doc/'+data.coverImgFile, target='_blank') Скачать
+            else
+              span.label.label-default Нет
+          .col-xs-9
+            input.form-control(type='file',name='coverImgFile',id='coverImgFile',required=false)
+        
         .form-group
-          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
-          .col-xs-10
-            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
-              =data.descript
-        +textarea(2,'capabilities','capabilities','Ваши возможности','Чем вы можете помочь сообществу?',data.capabilities)
-        .form-group
-          label.col-xs-2.control-label(for='descript') ИМЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ
-          .col-xs-10
-            textarea.form-control(rows=3,name='descript',id='descript',placeholder='ПЛХОЛДЕРРРРРРРРРРРРР')
-              =data.descript
-        +textarea(2,'needs','needs','Ваши потребности','Что нужно вам для реализации проекта?',data.needs)
-        +submit('Сохранить')
+          .col-xs-12.text-center
+            button.btn.btn-default Сохранить
