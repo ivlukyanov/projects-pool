@@ -11,68 +11,68 @@ block content
       =error
   .row
     .col-sm-offset-1.col-sm-10
-      form(method='post',enctype='multipart/form-data')
-        .row.form-group
+      form.form-horizontal(method='post',enctype='multipart/form-data')
+        .form-group
           label.col-xs-2.control-label(for='userEmail') Создаем аккаунт
           .col-xs-5
             input.form-control(type='text',name='userEmail',id='userEmail',placeholder='Email',value=data.userEmail,required=true)
           .col-xs-5
             input.form-control(type='text',name='userPassword',id='userPassword',placeholder='Пароль',required=true)
-        .row.form-group
+        .form-group
           label.col-xs-2.control-label(for='userName') Лидер проекта
           .col-xs-5
             input.form-control(type='text',name='userName',id='userName',placeholder='Имя',value=data.userName,required=true)
           .col-xs-5
             input.form-control(type='text',name='userSurName',id='userSurName',placeholder='Фамилия',value=data.userSurname,required=true)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjName') Название
           .col-xs-10
             input.form-control(type='text',name='prjName',id='prjName',placeholder='Как называется ваш проект',value=data.prjName,required=true)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjUrl') URL
           .col-xs-10
             input.form-control(type='text',name='prjUrl',id='prjUrl',placeholder='Адрес вашего сайта',value=data.prjUrl,required=true)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjDescript') Описание
           .col-xs-10
             textarea.form-control(rows=3,name='prjDescript',id='prjDescript',placeholder='Вкратце о проекте (2-3 предложения)',required=true)
               =data.prjDescript
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjStack') Стек технологий
           .col-xs-10
             textarea.form-control(rows=2,name='prjStack',id='prjStack',placeholder='На каких технологиях разрабатывается проект?')
               =data.prjStack
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjCapabilities') Ваши возможности
           .col-xs-10
             textarea.form-control(rows=2,name='prjCapabilities',id='prjCapabilities',placeholder='Чем вы можете помочь сообществу?')
               =data.prjCapabilities
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjNeeds') Ваши потребности
           .col-xs-10
             textarea.form-control(rows=2,name='prjNeeds',id='prjNeeds',placeholder='Что нужно вам для реализации проекта?')
               =data.prjNeeds
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjPresentationFile') Презентация
           .col-xs-10
             input.form-control(type='file',name='prjPresentationFile',id='prjPresentationFile',required=true)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjWhitePaperFile') White Paper
           .col-xs-10
             input.form-control(type='file',name='prjWhitePaperFile',id='prjWhitePaperFile',required=false)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjLogoFile') Логотип
           .col-xs-10
             input.form-control(type='file',name='prjLogoFile',id='prjLogoFile',required=false)
-        .row.form-group
+        .form-group
           label.control-label.col-xs-2(for='prjCoverImgFile') Картинка на фон
           .col-xs-10
             input.form-control(type='file',name='prjCoverImgFile',id='prjCoverImgFile',required=false)
-        .row.form-group
+        .form-group
           .col-xs-offset-2.col-xs-10.checkbox
             label
               input(type='checkbox',name='prjAgreement',id='prjAgreement',required=true)
               |  Разрешаю использовать мои персональные данные
-        .row.form-group
+        .form-group
           .col-xs-12.text-center
             button.btn.btn-default Зарегистрироваться
